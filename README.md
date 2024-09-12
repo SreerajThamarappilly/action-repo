@@ -25,9 +25,9 @@ The webhook is configured in GitHub repository settings to send payloads to the 
 
 ### 2. Branches
 
-The webhook is configured to trigger for actions on specific branches.
+The webhook is configured to trigger for actions on all the branches of this repository.
 
-- The repository monitors activities such as push, pull request, and merge on the `develop` branch.
+- The repository monitors activities such as push, pull request, and merge on any branch.
   
 In the GitHub Actions YAML file (`.github/workflows/main.yml`), the following branches are configured:
 
@@ -35,15 +35,15 @@ In the GitHub Actions YAML file (`.github/workflows/main.yml`), the following br
 on:
   push:
     branches:
-      - develop
+      - '**'
   pull_request:
     branches:
-      - develop
+      - '**'
 ```
 
 ### 3. Workflow Actions
 
-The GitHub Actions workflow will trigger the webhook events when code is pushed or pull requests are made on the develop branch.
+The GitHub Actions workflow will trigger the webhook events when code is pushed or pull requests are made on any branch.
 
 ### 4. Sample Event Payload
 
@@ -51,8 +51,11 @@ The GitHub Actions workflow will trigger the webhook events when code is pushed 
 
 ```json
 {
-  "action": "pushed",
-  "branch": "develop",
+  "request_id": "b72740da18b7c0d3d29b1ef28d3f51892615d37c",
+  "author": "SreerajThamarappilly",
+  "action": "PUSH",
+  "from_branch": null,
+  "to_branch": "develop",
   "timestamp": "2024-09-12T05:23:50Z"
 }
 ```
@@ -61,7 +64,9 @@ The GitHub Actions workflow will trigger the webhook events when code is pushed 
 
 ```json
 {
-  "action": "pull_request",
+  "request_id": "b72740da18b7c0d3d29b1ef28d3f51892615d37d",
+  "author": "SreerajThamarappilly",
+  "action": "PULL_REQUEST_OPENED",
   "from_branch": "feature-branch",
   "to_branch": "develop",
   "timestamp": "2024-09-12T06:00:00Z"
@@ -72,7 +77,9 @@ The GitHub Actions workflow will trigger the webhook events when code is pushed 
 
 ```json
 {
-  "action": "merged",
+  "request_id": "b72740da18b7c0d3d29b1ef28d3f51892615d37d",
+  "author": "SreerajThamarappilly",
+  "action": "MERGE",
   "from_branch": "feature-branch",
   "to_branch": "develop",
   "timestamp": "2024-09-12T06:30:00Z"
