@@ -1,17 +1,20 @@
-name: GitHub Action Test Workflow
+name: GitHub Actions Webhook
 
 on:
-  push:
+  push:  # Capture push events on any branch
     branches:
-      - develop
-  pull_request:
+      - '**'  # This will listen to all branches
+  pull_request:  # Capture pull request events on any branch
     branches:
-      - develop
+      - '**'  # This will listen to all branches
 
 jobs:
-  build:
+  trigger-webhook:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Run a simple script
-        run: echo "Hello, GitHub Actions!"
+      - name: Send webhook event
+        run: |
+          curl -X POST \
+          -H "Content-Type: application/json" \
+          -d '{"event_type": "${{ github.event_name }}", "branch": "${{ github.ref }}", "author": "${{ github.actor }}"}' \
+          http://webhookapp-1.eba-bthgchy3.ap-south-1.elasticbeanstalk.com/webhook
